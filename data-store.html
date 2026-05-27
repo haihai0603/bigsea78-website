@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataVault · 高质量数据源集合</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050810;
+      --surface: #0a1220;
+      --surface2: #0d1828;
+      --border: #142030;
+      --border2: #1a3050;
+      --cyan: #00e5c8;
+      --cyan-dim: #007a6e;
+      --cyan-glow: rgba(0,229,200,0.15);
+      --cyan-glow2: rgba(0,229,200,0.4);
+      --blue: #3a8dff;
+      --text: #dde8f0;
+      --muted: #506878;
+      --muted2: #3a4a58;
+      --green: #00d47a;
+      --amber: #ffb030;
+      --red: #ff4060;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Noto Serif SC', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scrollbar-width: thin; scrollbar-color: var(--cyan-dim) var(--bg); }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 2px; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,200,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,200,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow orb */
+    .glow-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .glow-1 {
+      width: 500px; height: 500px;
+      background: rgba(0,229,200,0.06);
+      top: -100px; right: -100px;
+    }
+    .glow-2 {
+      width: 400px; height: 400px;
+      background: rgba(58,141,255,0.05);
+      bottom: 200px; left: -100px;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideRight {
+      from { transform: translateX(-20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes scanline {
+      0% { top: 0%; }
+      100% { top: 100%; }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      backdrop-filter: blur(20px);
+      background: rgba(5,8,16,0.85);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .logo {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    nav .logo-icon {
+      width: 28px; height: 28px;
+      background: var(--cyan);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--bg);
+      font-weight: 700;
+    }
+
+    nav .logo span { color: var(--text); }
+
+    nav ul {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    nav ul a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      background: var(--cyan);
+      color: var(--bg) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.75rem !important;
+      transition: all 0.3s !important;
+    }
+
+    .nav-cta:hover {
+      background: #00fff0;
+      box-shadow: 0 0 20px var(--cyan-glow2);
+      color: var(--bg) !important;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(0,229,200,0.08);
+      border: 1px solid var(--cyan-dim);
+      border-radius: 100px;
+      padding: 0.35rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .hero-badge .dot {
+      width: 6px; height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: blink 1.5s infinite;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 8vw, 6.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.1s forwards;
+    }
+
+    .hero h1 .c1 { color: var(--text); }
+    .hero h1 .c2 { color: var(--cyan); }
+
+    .hero-sub {
+      font-family: var(--font-mono);
+      font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat .hs-num {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--cyan);
+      line-height: 1;
+    }
+
+    .hero-stat .hs-label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    .hero-search {
+      display: flex;
+      max-width: 560px;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+
+    .hero-search:focus-within {
+      border-color: var(--cyan-dim);
+      box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    .hero-search input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 1rem 1.2rem;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .hero-search input::placeholder { color: var(--muted2); }
+
+    .hero-search button {
+      background: var(--cyan);
+      border: none;
+      padding: 0 1.5rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--bg);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.3s;
+    }
+
+    .hero-search button:hover { background: #00fff0; }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.5s forwards;
+    }
+
+    .h-tag {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .h-tag:hover, .h-tag.active {
+      border-color: var(--cyan-dim);
+      color: var(--cyan);
+      background: var(--cyan-glow);
+    }
+
+    /* ---- SECTION BASE ---- */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 20px; height: 1px;
+      background: var(--cyan);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 1rem;
+      line-height: 1.15;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 520px;
+      margin-bottom: 3rem;
+    }
+
+    /* ---- DIVIDER ---- */
+    .divider { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    .divider hr { border: none; border-top: 1px solid var(--border); }
+
+    /* ---- TRUST ---- */
+    .trust-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .trust-item::before {
+      content: '';
+      width: 6px; height: 6px;
+      border: 1px solid var(--cyan-dim);
+      border-radius: 50%;
+    }
+
+    /* ---- DATA CATEGORIES ---- */
+    .cat-tabs {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .cat-tab {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .cat-tab:hover, .cat-tab.active {
+      border-color: var(--cyan-dim);
+      color: var(--cyan);
+      background: var(--cyan-glow);
+    }
+
+    /* ---- DATA CARDS ---- */
+    .data-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .data-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.8rem;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .data-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .data-card:hover {
+      border-color: var(--cyan-dim);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px var(--cyan-glow);
+    }
+
+    .data-card:hover::before { opacity: 1; }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .card-cat {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(0,229,200,0.1);
+      color: var(--cyan);
+      border: 1px solid var(--cyan-dim);
+    }
+
+    .card-cat.orange {
+      background: rgba(255,176,48,0.1);
+      color: var(--amber);
+      border-color: rgba(255,176,48,0.3);
+    }
+
+    .card-cat.blue {
+      background: rgba(58,141,255,0.1);
+      color: var(--blue);
+      border-color: rgba(58,141,255,0.3);
+    }
+
+    .card-price {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .card-price small {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .data-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .data-card .desc {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
+    }
+
+    .card-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    .card-meta-item .mi-icon {
+      color: var(--cyan);
+      font-size: 0.8rem;
+    }
+
+    .card-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted2);
+      overflow: hidden;
+      max-height: 80px;
+      position: relative;
+    }
+
+    .card-preview::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, var(--bg));
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .card-tag {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      color: var(--muted2);
+      border: 1px solid var(--border);
+    }
+
+    .card-btn {
+      width: 100%;
+      margin-top: 1.2rem;
+      padding: 0.7rem;
+      background: transparent;
+      border: 1px solid var(--border2);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .card-btn:hover {
+      background: var(--cyan-glow);
+      border-color: var(--cyan-dim);
+      color: var(--cyan);
+    }
+
+    /* ---- HOW IT WORKS ---- */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 30px; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan-dim), var(--cyan-dim), transparent);
+      z-index: 0;
+    }
+
+    .step-card {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--cyan-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--cyan);
+      margin: 0 auto 1.2rem;
+    }
+
+    .step-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: var(--text);
+    }
+
+    .step-card p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* ---- PRICING ---- */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .price-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.4s;
+      position: relative;
+    }
+
+    .price-card.featured {
+      border-color: var(--cyan-dim);
+      background: linear-gradient(180deg, rgba(0,229,200,0.06) 0%, var(--surface) 40%);
+    }
+
+    .price-card.featured::before {
+      content: '推荐方案';
+      position: absolute;
+      top: -12px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--cyan);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.8rem;
+      border-radius: 100px;
+      text-transform: uppercase;
+    }
+
+    .price-tier {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.5rem;
+    }
+
+    .price-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .price-amount {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .price-num {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .price-num .currency {
+      font-size: 1.2rem;
+      vertical-align: top;
+      margin-right: 0.2rem;
+    }
+
+    .price-num .period {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .price-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .price-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .price-features li .check {
+      color: var(--cyan);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .price-btn {
+      width: 100%;
+      padding: 0.85rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+    }
+
+    .price-btn.primary {
+      background: var(--cyan);
+      color: var(--bg);
+    }
+
+    .price-btn.primary:hover {
+      background: #00fff0;
+      box-shadow: 0 0 30px var(--cyan-glow2);
+      transform: translateY(-2px);
+    }
+
+    .price-btn.ghost {
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--text);
+    }
+
+    .price-btn.ghost:hover {
+      border-color: var(--cyan-dim);
+      color: var(--cyan);
+    }
+
+    /* ---- FAQ ---- */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      max-width: 800px;
+    }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .faq-item.open {
+      border-color: var(--cyan-dim);
+    }
+
+    .faq-q {
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      background: transparent;
+      border: none;
+      text-align: left;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color 0.3s;
+    }
+
+    .faq-q:hover { color: var(--cyan); }
+
+    .faq-q .faq-arrow {
+      color: var(--cyan);
+      transition: transform 0.3s;
+      font-size: 1.2rem;
+    }
+
+    .faq-item.open .faq-arrow { transform: rotate(45deg); }
+
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+    }
+
+    .faq-item.open .faq-a {
+      max-height: 300px;
+      padding: 0 1.5rem 1.2rem;
+    }
+
+    .faq-a p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+
+    /* ---- CTA ---- */
+    .cta-section {
+      text-align: center;
+      padding: 8rem 2rem;
+    }
+
+    .cta-section .cta-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .cta-section .cta-title .c { color: var(--cyan); }
+
+    .cta-section .cta-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2.2rem;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-cyan {
+      background: var(--cyan);
+      color: var(--bg);
+    }
+
+    .btn-cyan:hover {
+      background: #00fff0;
+      box-shadow: 0 0 30px var(--cyan-glow2);
+      transform: translateY(-3px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--cyan-dim);
+      color: var(--cyan);
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--cyan);
+      margin-bottom: 0.8rem;
+    }
+
+    footer p {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 900px) {
+      .steps-grid, .pricing-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { display: none; }
+      .hero-stats { gap: 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      .data-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ---- MODAL ---- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,8,16,0.85);
+      backdrop-filter: blur(10px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--cyan-dim);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 620px;
+      width: 100%;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 32px; height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: all 0.3s;
+    }
+
+    .modal-close:hover { color: var(--red); background: rgba(255,64,96,0.1); }
+
+    .modal h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal .modal-cat {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(0,229,200,0.1);
+      color: var(--cyan);
+      border: 1px solid var(--cyan-dim);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .modal-data-preview {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      overflow: auto;
+      max-height: 300px;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      white-space: pre;
+    }
+
+    .modal-purchase {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .modal-price {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+
+    .modal-price small {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    /* Loading dots animation in modal */
+    .loading-dots::after {
+      content: '';
+      animation: blink 1s infinite;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Decorative orbs -->
+<div class="glow-orb glow-1"></div>
+<div class="glow-orb glow-2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon">DV</div>
+    Data<span>Vault</span>
+  </div>
+  <ul>
+    <li><a href="#data">数据产品</a></li>
+    <li><a href="#how">如何购买</a></li>
+    <li><a href="#pricing">定价</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">联系我们</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    数据实时更新 · 每日增量补充
+  </div>
+  <h1>
+    <span class="c1">找到精准数据，</span><br>
+    <span class="c2">驱动商业增长</span>
+  </h1>
+  <p class="hero-sub">
+    高质量、行业垂直、结构化可导入的数据集。拿来就能用，用了就能变现。
+  </p>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hs-num" id="stat1">0</div>
+      <div class="hs-label">数据集总量</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-num" id="stat2">0</div>
+      <div class="hs-label">行业覆盖</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-num" id="stat3">0</div>
+      <div class="hs-label">付费客户</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hs-num">99.5<span style="font-size:0.5em">%</span></div>
+      <div class="hs-label">数据准确率</div>
+    </div>
+  </div>
+
+  <div class="hero-search">
+    <input type="text" placeholder="搜索数据集，如：企业工商数据、短视频评论、电商竞品..." id="searchInput">
+    <button onclick="doSearch()">搜索数据</button>
+  </div>
+
+  <div class="hero-tags">
+    <span class="h-tag active" onclick="this.classList.toggle('active')">全部</span>
+    <span class="h-tag" onclick="this.classList.toggle('active')">企业工商</span>
+    <span class="h-tag" onclick="this.classList.toggle('active')">电商数据</span>
+    <span class="h-tag" onclick="this.classList.toggle('active')">短视频</span>
+    <span class="h-tag" onclick="this.classList.toggle('active')">医疗健康</span>
+    <span class="h-tag" onclick="this.classList.toggle('active')">金融数据</span>
+    <span class="h-tag" onclick="this.classList.toggle('active')">房产数据</span>
+  </div>
+</section>
+
+<!-- DATA PRODUCTS -->
+<div class="divider"><hr></div>
+<section id="data">
+  <div class="section-label reveal">Data Products</div>
+  <h2 class="section-title reveal">精选数据集，即买即用</h2>
+  <p class="section-sub reveal">每个数据集都经过清洗、去重、格式标准化，直接导入数据库或分析工具。</p>
+
+  <div class="cat-tabs reveal">
+    <button class="cat-tab active">全部</button>
+    <button class="cat-tab">企业工商</button>
+    <button class="cat-tab">电商数据</button>
+    <button class="cat-tab">短视频数据</button>
+    <button class="cat-tab">医疗健康</button>
+    <button class="cat-tab">金融数据</button>
+    <button class="cat-tab">房产数据</button>
+  </div>
+
+  <div class="data-cards" id="dataCards">
+    <!-- Cards injected by JS -->
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<div class="divider"><hr></div>
+<section id="how">
+  <div class="section-label reveal">How It Works</div>
+  <h2 class="section-title reveal">三步，轻松获取数据</h2>
+  <div class="steps-grid">
+    <div class="step-card reveal">
+      <div class="step-num">1</div>
+      <h3>浏览 &amp; 筛选</h3>
+      <p>按行业、字段量、时间范围、价格筛选，找到最匹配的数据集。</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">2</div>
+      <h3>预览样本</h3>
+      <p>每个数据集都提供免费样本预览，确认格式和质量后再购买。</p>
+    </div>
+    <div class="step-card reveal">
+      <div class="step-num">3</div>
+      <h3>下载 &amp; 使用</h3>
+      <p>付款后立即下载，支持 CSV/JSON/Excel 格式，附字段说明文档。</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<div class="divider"><hr></div>
+<section id="pricing">
+  <div class="section-label reveal">Pricing</div>
+  <h2 class="section-title reveal">灵活定价，按需订阅</h2>
+  <p class="section-sub reveal">单次购买或月度订阅，随时升级或降级。</p>
+  <div class="pricing-grid">
+    <div class="price-card reveal">
+      <div class="price-tier">基础版</div>
+      <h3>单次购买</h3>
+      <div class="price-amount">
+        <div class="price-num"><span class="currency">¥</span>99<span class="period">/次起</span></div>
+      </div>
+      <ul class="price-features">
+        <li><span class="check">✓</span>单次下载权限</li>
+        <li><span class="check">✓</span>样本数据预览</li>
+        <li><span class="check">✓</span>CSV/JSON格式</li>
+        <li><span class="check">✓</span>字段说明文档</li>
+        <li><span class="check">✓</span>7天重复下载</li>
+      </ul>
+      <button class="price-btn ghost">开始选购</button>
+    </div>
+    <div class="price-card featured reveal">
+      <div class="price-tier">专业版</div>
+      <h3>月度订阅</h3>
+      <div class="price-amount">
+        <div class="price-num"><span class="currency">¥</span>399<span class="period">/月</span></div>
+      </div>
+      <ul class="price-features">
+        <li><span class="check">✓</span>每月3次下载额度</li>
+        <li><span class="check">✓</span>全量数据集访问</li>
+        <li><span class="check">✓</span>优先获取新数据</li>
+        <li><span class="check">✓</span>API接口访问（即将）</li>
+        <li><span class="check">✓</span>专属数据定制</li>
+      </ul>
+      <button class="price-btn primary">立即订阅</button>
+    </div>
+    <div class="price-card reveal">
+      <div class="price-tier">企业版</div>
+      <h3>年度合作</h3>
+      <div class="price-amount">
+        <div class="price-num"><span class="currency">¥</span>2999<span class="period">/年</span></div>
+      </div>
+      <ul class="price-features">
+        <li><span class="check">✓</span>无限次数据下载</li>
+        <li><span class="check">✓</span>无限量API调用</li>
+        <li><span class="check">✓</span>数据实时推送</li>
+        <li><span class="check">✓</span>专属客户经理</li>
+        <li><span class="check">✓</span>完全定制化数据</li>
+      </ul>
+      <button class="price-btn ghost">联系企业销售</button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<div class="divider"><hr></div>
+<section id="faq">
+  <div class="section-label reveal">FAQ</div>
+  <h2 class="section-title reveal">常见问题</h2>
+  <div class="faq-list">
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        数据从哪里来？是否合法？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>数据来源于公开政府信息（工商年报、专利库）、合法商业数据采购、以及用户授权数据。所有数据集均经过法务审核，确保在《中华人民共和国数据安全法》框架下合规使用。</p>
+      </div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        数据格式是什么？如何导入？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>默认提供 CSV 格式，同时支持 JSON、Excel（xlsx）格式下载。每个数据包附字段说明文档，标注主键、字段类型、数据来源。导入 MySQL、MongoDB、Excel、Python Pandas 均可直接使用。</p>
+      </div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        数据多久更新一次？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>不同数据类型更新频率不同：企业工商数据每周更新，电商数据每日更新，短视频数据实时采集。订阅用户可享受增量数据推送服务，实时同步最新数据。</p>
+      </div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        买了能退款吗？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>数据为数字商品，下载前支持全额退款。一旦下载，由于数据可复制特性，不支持退款但可换货。下单前强烈建议先预览样本数据，确认格式和质量符合需求后再购买。</p>
+      </div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        可以定制特定数据吗？
+        <span class="faq-arrow">+</span>
+      </button>
+      <div class="faq-a">
+        <p>当然可以。专业版和年费用户享有数据定制服务，说明需求（行业、字段、时间范围、数量），我们评估后给出报价和交付周期。定制数据价格根据数据量和工作量评估。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal" id="contact">
+  <div class="section-label" style="justify-content:center">Get Started</div>
+  <h2 class="cta-title reveal">
+    需要<span class="c">定制数据</span>？<br>告诉我们你的需求
+  </h2>
+  <p class="cta-sub reveal">
+    从字段定义到交付格式，完全按你的业务场景定制数据。
+  </p>
+  <div class="cta-btns reveal">
+    <a href="mailto:data@bigse.store" class="btn btn-cyan">📧 发送需求邮件</a>
+    <button class="btn btn-outline" onclick="copyWechat()">💬 微信号 bigse_data</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">DataVault</div>
+  <p>© 2025 · 高质量数据源集合 · data@bigse.store</p>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-cat" id="modalCat">企业工商</div>
+    <h3 id="modalTitle">全国企业工商基础数据</h3>
+    <div class="modal-data-preview" id="modalPreview">id,name,province,industry,reg_capital,employee_count,status
+10001,北京星辰科技有限公司,北京,科技推广服务,500万元,45家,存续
+10002,上海蓝海数据有限公司,上海,信息技术咨询,1000万元,120家,存续
+10003,深圳创新互联科技,广东,软件开发,300万元,28家,存续
+...</div>
+    <div class="modal-purchase">
+      <div class="modal-price" id="modalPrice">¥199<small>/次</small></div>
+      <button class="btn btn-cyan" style="flex:1;justify-content:center">立即购买</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---- DATA ----
+  const dataProducts = [
+    {
+      id: 1,
+      category: '企业工商',
+      catClass: '',
+      title: '全国企业工商基础数据',
+      desc: '涵盖全国 5000 万+ 在营企业基本信息，含注册资金、经营范围、股东信息、经营状态。',
+      price: 199,
+      priceLabel: '/次',
+      rows: '5000万+ 条',
+      format: 'CSV / Excel',
+      update: '每周更新',
+      preview: `id,name,province,city,industry,reg_capital,employee,status,reg_date
+10001,北京星辰科技有限公司,北京,北京,科技推广服务,500万元,45,存续,2018-03-15
+10002,上海蓝海数据有限公司,上海,上海,信息技术咨询,1000万元,120,存续,2015-07-22
+10003,深圳创新互联科技,广东,深圳,软件开发,300万元,28,存续,2020-01-08
+10004,广州智云医疗科技,广东,广州,医疗器械,800万元,67,存续,2019-11-30
+10005,成都锦程教育咨询,四川,成都,教育咨询,50万元,12,存续,2021-05-14
+10006,杭州云栖数据服务,浙江,杭州,云计算服务,2000万元,230,存续,2016-08-01
+10007,武汉蓝光科技,湖北,武汉,光电技术,600万元,55,存续,2017-04-19
+10008,西安华清软件,陕西,西安,软件外包,150万元,33,注销,2019-09-10`,
+      tags: ['工商信息', '注册资本', '经营状态', '企业年报']
+    },
+    {
+      id: 2,
+      category: '电商数据',
+      catClass: 'orange',
+      title: '主流电商平台竞品数据',
+      desc: '淘宝/京东/拼多多热销商品维度数据，含价格、销量、评论数、SKU、店铺信息。',
+      price: 299,
+      priceLabel: '/次',
+      rows: '200万+ 条',
+      format: 'CSV / JSON',
+      update: '每日更新',
+      preview: `product_id,name,platform,category,price, sales_count,comment_count,shop_name,rating
+A101,小米手环9,京东,运动手环,299,85600,32400,小米官方旗舰店,4.8
+A102,华为Watch GT5,淘宝,智能手表,1899,43200,15800,华为官方旗舰店,4.9
+A103,Apple Watch S10,拼多多,智能手表,2899,28900,11200,Apple授权店,4.7
+A104,佳明Forerunner265,京东,运动手表,3680,12300,5600,佳明运动旗舰店,4.8
+A105,OPPO Watch X,天猫,智能手表,2199,8900,3200,OPPO官方店,4.6`,
+      tags: ['竞品分析', '价格监控', '销量排行', 'SKU分析']
+    },
+    {
+      id: 3,
+      category: '短视频数据',
+      catClass: 'blue',
+      title: '抖音/快手短视频热门内容数据',
+      desc: '视频维度数据，含播放量、点赞、评论、转发、发布时间、话题标签、达人信息。',
+      price: 399,
+      priceLabel: '/次',
+      rows: '500万+ 条',
+      format: 'CSV / JSON',
+      update: '实时采集',
+      preview: `video_id,title,platform,author,followers,views,likes,comments,shares,topic_tags,publish_time
+V8801,斯诺克147满分杆全程回顾,抖音,台球小王子,85万,520万,28万,1.2万,3.5万,#台球,#体育,2025-05-10 14:32
+V8802,梅西任意球破门合集,快手,足球精华,120万,380万,19万,8900,2.1万,#梅西,#足球,2025-05-09 20:15
+V8803,程序员副业赚钱的5种方式,抖音,码农日记,45万,210万,8.5万,3200,5600,#副业,#程序员,2025-05-08 10:00
+V8804,AI生成视频保姆级教程,抖音,AI研究所,62万,190万,7.2万,2800,4800,#AI,#教程,2025-05-07 16:45`,
+      tags: ['内容分析', '达人数据', '话题热度', '流量监测']
+    },
+    {
+      id: 4,
+      category: '医疗健康',
+      catClass: '',
+      title: '全国医院/科室基础数据',
+      desc: '全国三甲医院、二甲医院信息，含科室设置、医生数量、床位数、重点科室。',
+      price: 149,
+      priceLabel: '/次',
+      rows: '8万+ 条',
+      format: 'Excel / CSV',
+      update: '季度更新',
+      preview: `hospital_id,name,province,city,hospital_level,department_count,bed_count,key_departments
+H001,北京协和医院,北京,北京,三甲,45,2400,心内科,肿瘤科,风湿免疫科
+H002,华西医院,四川,成都,三甲,52,4300,消化内科,神经外科,麻醉科
+H003,中山大学附属第一医院,广东,广州,三甲,48,3200,肾内科,普外科,骨科
+H004,武汉同济医院,湖北,武汉,三甲,50,3800,器官移植,肿瘤科,骨科
+H005,江苏省人民医院,江苏,南京,三甲,40,2100,心血管内科,血液科`,
+      tags: ['医院信息', '科室数据', '医疗资源', '床位数据']
+    },
+    {
+      id: 5,
+      category: '金融数据',
+      catClass: 'orange',
+      title: 'A股上市公司财务数据',
+      desc: '沪深上市公司历年财报数据，含营收、净利润、资产负债率、ROE、市盈率。',
+      price: 499,
+      priceLabel: '/次',
+      rows: '2万+ 条/年',
+      format: 'Excel / CSV',
+      update: '年报更新',
+      preview: `stock_code,company,year,revenue,net_profit,assets,liabilities,roe,pe_ratio,dividend
+600519,贵州茅台,2024,1505亿,747亿,2719亿,572亿,31.2%,28.5,分红两次
+000858,五粮液,2024,862亿,319亿,1352亿,398亿,23.6%,22.1,分红一次
+601318,中国平安,2024,9138亿,856亿,11291亿,6829亿,7.6%,8.2,不分红
+600036,招商银行,2024,3391亿,1483亿,105000亿,96600亿,16.2%,7.8,分红一次
+000001,平安银行,2024,893亿,286亿,41000亿,37100亿,7.1%,6.5,不分红`,
+      tags: ['财务数据', '年报', '股票分析', '投资数据']
+    },
+    {
+      id: 6,
+      category: '房产数据',
+      catClass: 'blue',
+      title: '主要城市二手房挂牌数据',
+      desc: '北上广深等30城二手房实时挂牌数据，含面积、单价、总价、楼层、装修、地铁距离。',
+      price: 249,
+      priceLabel: '/次',
+      rows: '800万+ 条',
+      format: 'CSV / JSON',
+      update: '每日更新',
+      preview: `house_id,city,district,area,unit_price,total_price,floor,decoration,metro_dist,age
+H0001,北京,海淀,89平,7.8万/平,694万,中楼层/共18层,精装,距4号线500米,2008年建成
+H0002,上海,浦东,126平,6.2万/平,781万,高楼层/共28层,简装,距2号线800米,2015年建成
+H0003,深圳,南山,75平,9.5万/平,712万,低楼层/共32层,毛坯,距1号线300米,2020年建成
+H0004,广州,天河,108平,4.8万/平,518万,高楼层/共22层,精装,距3号线600米,2012年建成
+H0005,成都,锦江,95平,2.1万/平,200万,中楼层/共15层,精装,距2号线400米,2018年建成`,
+      tags: ['房产数据', '二手房', '地铁房', '价格分析']
+    }
+  ];
+
+  // ---- RENDER CARDS ----
+  function renderCards(filter) {
+    const container = document.getElementById('dataCards');
+    const filtered = filter === 'all' || !filter
+      ? dataProducts
+      : dataProducts.filter(d => d.category.includes(filter));
+
+    container.innerHTML = filtered.map((d, i) => `
+      <div class="data-card reveal" style="animation-delay:${i * 80}ms" onclick="openModal(${d.id})">
+        <div class="card-top">
+          <span class="card-cat ${d.catClass}">${d.category}</span>
+          <div class="card-price">¥${d.price}<small>${d.priceLabel}</small></div>
+        </div>
+        <h3>${d.title}</h3>
+        <p class="desc">${d.desc}</p>
+        <div class="card-meta">
+          <div class="card-meta-item"><span class="mi-icon">📊</span>${d.rows}</div>
+          <div class="card-meta-item"><span class="mi-icon">📁</span>${d.format}</div>
+          <div class="card-meta-item"><span class="mi-icon">🔄</span>${d.update}</div>
+        </div>
+        <div class="card-preview">${d.preview.split('\n').slice(0, 4).join('\n')}</div>
+        <div class="card-tags">${d.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}</div>
+        <button class="card-btn">查看详情 &amp; 购买 →</button>
+      </div>
+    `).join('');
+
+    // re-observe new reveals
+    setTimeout(() => {
+      document.querySelectorAll('#dataCards .reveal').forEach((el, i) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(40px)';
+        setTimeout(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+          el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        }, i * 100);
+      });
+    }, 50);
+  }
+
+  // ---- MODAL ----
+  function openModal(id) {
+    const d = dataProducts.find(p => p.id === id);
+    if (!d) return;
+    document.getElementById('modalCat').textContent = d.category;
+    document.getElementById('modalCat').className = 'modal-cat ' + d.catClass;
+    document.getElementById('modalTitle').textContent = d.title;
+    document.getElementById('modalPreview').textContent = d.preview;
+    document.getElementById('modalPrice').innerHTML = `¥${d.price}<small>${d.priceLabel}</small>`;
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // ---- CATEGORY TABS ----
+  document.querySelectorAll('.cat-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filter = tab.textContent;
+      renderCards(filter === '全部' ? 'all' : filter);
+    });
+  });
+
+  // ---- FAQ ----
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  // ---- SEARCH ----
+  function doSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (!q) return;
+    const filtered = dataProducts.filter(d =>
+      d.title.includes(q) || d.desc.includes(q) || d.category.includes(q) || d.tags.some(t => t.includes(q))
+    );
+    const container = document.getElementById('dataCards');
+    if (filtered.length === 0) {
+      container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted);font-family:var(--font-mono);font-size:0.85rem">未找到相关数据集，试试其他关键词？</div>';
+      return;
+    }
+    renderCards('__search__');
+    const cards = document.querySelectorAll('#dataCards .data-card');
+    filtered.forEach((d, i) => {
+      if (cards[i]) {
+        cards[i].style.display = '';
+      }
+    });
+    // hide non-matching
+    dataProducts.forEach((d, i) => {
+      const card = container.querySelectorAll('.data-card')[i];
+      if (card && !filtered.includes(d)) card.style.display = 'none';
+    });
+  }
+
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
+
+  // ---- COPY WECHAT ----
+  function copyWechat() {
+    navigator.clipboard.writeText('bigse_data').then(() => {
+      const btn = document.querySelector('.btn-outline');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '✅ 已复制 bigse_data';
+      btn.style.color = 'var(--green)';
+      setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
+    }).catch(() => {
+      const btn = document.querySelector('.btn-outline');
+      btn.innerHTML = '⚠️ 请手动复制: bigse_data';
+      btn.style.color = 'var(--amber)';
+    });
+  }
+
+  // ---- COUNTER ANIMATION ----
+  function countTo(el, target, suffix = '') {
+    let current = 0;
+    const step = target / 60;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      el.textContent = Math.floor(current) + suffix;
+    }, 16);
+  }
+
+  // ---- SCROLL REVEAL ----
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const delay = i * 60;
+        setTimeout(() => entry.target.classList.add('visible'), delay);
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // ---- INIT ----
+  renderCards('all');
+
+  // Count-up for hero stats (trigger after animation)
+  setTimeout(() => {
+    countTo(document.getElementById('stat1'), 180, '+');
+    countTo(document.getElementById('stat2'), 32, '个');
+    countTo(document.getElementById('stat3'), 2800, '+');
+  }, 600);
+</script>
+</body>
+</html>
