@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html lang="zh-CN">
 
@@ -1586,7 +1586,11 @@
 
         document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
 
-        document.getElementById('if (checkoutPayment === 'alipay') { document.getElementById('pmAlipay').classList.add('selected'); } else { document.getElementById('pmWechat').classList.add('selected'); }
+            if (checkoutPayment === 'alipay') {
+                document.getElementById('pmAlipay').classList.add('selected');
+            } else {
+                document.getElementById('pmWechat').classList.add('selected');
+            }
 
         document.getElementById('btnPay').disabled = false;
 
