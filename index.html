@@ -1562,7 +1562,7 @@
             const qrDiv = document.getElementById('qrImage');
 
             let qrSrc, payLabel;
-            if (checkoutPayment === 'alipay') { qrSrc = 'qr_alipay.jpg'; payLabel = '支付宝'; } else { qrSrc = 'qr_wechat.png'; payLabel = '微信'; };
+            if (checkoutPayment === 'alipay') { qrSrc = 'https://bigsea78.oss-cn-hongkong.aliyuncs.com/qr_alipay.jpg'; payLabel = '支付宝'; } else { qrSrc = 'https://bigsea78.oss-cn-hongkong.aliyuncs.com/qr_wechat.png'; payLabel = '微信'; };
 
             document.getElementById('payMethodName').textContent = `请使用${payLabel}扫码支付`;
 
