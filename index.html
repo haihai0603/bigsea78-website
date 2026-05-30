@@ -1016,7 +1016,7 @@
 
                 <button class="btn-prev" onclick="goStep(1)">← 上一步</button>
 
-                <button class="btn-next" id="btnPay" disabled onclick="selectPayment('wechat'); goStep(3);">确认支付 →</button>
+                <button class="btn-next" id="btnPay" onclick="goStep(3);">确认支付 →</button>
 
             </div>
 
@@ -1535,9 +1535,7 @@
 
         if (n === 3 && !checkoutPayment) {
 
-            showToast('请选择支付方式');
-
-            return;
+            checkoutPayment = 'wechat';
 
         }
 
