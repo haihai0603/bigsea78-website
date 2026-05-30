@@ -1655,7 +1655,14 @@
 
             currentOrderId = data.orderId;
 
-            document.getElementById('successOrderId').textContent = currentOrderId;
+            // Notify admin that user claimed payment
+            fetch(`${API_BASE}/api/orders/${currentOrderId}/confirm`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({})
+            }).then(r => r.json()).then(d => {
+                console.log('[Payment] Admin notified:', d);
+            }).catch(e => console.error('[Payment] Notify failed:', e));
 
             goStep(4);
 
