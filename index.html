@@ -953,6 +953,12 @@
 
             <div class="form-group">
 
+
+            <div class="form-group">
+                <label>📧 邮箱（必填，用于接收发货通知）</label>
+                <input type="email" id="custEmail" placeholder="用于接收商品发货通知">
+                <div class="error-msg" id="custEmailErr"></div>
+            </div>
                 <label>姓名 / 昵称（选填）</label>
 
                 <input type="text" id="custName" placeholder="选填，方便联系发货">
@@ -1448,6 +1454,8 @@
 
     let currentOrderId = '';
 
+        document.getElementById('custEmail').value = currentUser || '';
+
 
 
     function generateOrderId() {
@@ -1479,6 +1487,8 @@
         checkoutPayment = '';
 
         currentOrderId = '';
+
+        document.getElementById('custEmail').value = currentUser || '';
 
         document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
 
@@ -1613,6 +1623,12 @@
 
         const note = document.getElementById('custNote').value.trim();
 
+        const custEmail = document.getElementById('custEmail').value.trim();
+        if (!custEmail) {
+            showToast('请填写邮箱，用于接收发货通知');
+            return;
+        }
+
 
 
         // 提交订单到后端
@@ -1629,7 +1645,7 @@
 
                 customer: customer,
 
-                contact: contact,
+                contact: custEmail,
 
                 note: note,
 
