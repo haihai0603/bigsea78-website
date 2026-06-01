@@ -1,0 +1,2243 @@
+﻿<!DOCTYPE html>
+
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>大洋数字商城 - 课程·软件·电子书·字体·音频</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+
+            --bg-primary: #0a0a0a;
+
+            --bg-secondary: #111111;
+
+            --bg-card: #1a1a1a;
+
+            --bg-card-hover: #222222;
+
+            --accent: #f59e0b;
+
+            --accent-dark: #d97706;
+
+            --accent-glow: rgba(245, 158, 11, 0.15);
+
+            --text-primary: #f5f5f5;
+
+            --text-secondary: #a3a3a3;
+
+            --text-muted: #737373;
+
+            --border: #262626;
+
+            --success: #10b981;
+
+            --cart-bg: #f59e0b;
+
+            --cart-text: #0a0a0a;
+
+        }
+
+        body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg-primary); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+
+        a { color: inherit; text-decoration: none; }
+
+
+
+        /* ===== Header / Nav ===== */
+
+        header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(10,10,10,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+
+        .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 2rem; height: 70px; display: flex; align-items: center; justify-content: space-between; }
+
+        .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.6rem; background: linear-gradient(135deg, var(--accent), #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        .logo span { display: block; font-family: 'Noto Sans SC', sans-serif; font-size: 0.65rem; font-weight: 400; letter-spacing: 3px; color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); margin-top: -2px; }
+
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+
+        nav ul a { color: var(--text-secondary); font-size: 0.9rem; transition: color 0.3s; position: relative; padding: 0.3rem 0; }
+
+        nav ul a:hover, nav ul a.active { color: var(--accent); }
+
+        nav ul a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent); transition: width 0.3s; }
+
+        nav ul a:hover::after, nav ul a.active::after { width: 100%; }
+
+        .header-actions { display: flex; align-items: center; gap: 1rem; }
+
+        .cart-btn { position: relative; background: none; border: 1px solid var(--border); color: var(--text-primary); padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+
+        .cart-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .cart-count { background: var(--cart-bg); color: var(--cart-text); font-size: 0.7rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+
+
+
+        /* ===== Hero ===== */
+
+        .hero { padding: 140px 2rem 80px; text-align: center; position: relative; overflow: hidden; }
+
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at 50% 0%, rgba(245,158,11,0.08) 0%, transparent 60%); pointer-events: none; }
+
+        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; font-weight: 900; margin-bottom: 1rem; background: linear-gradient(135deg, var(--accent), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+        .hero p { color: var(--text-secondary); font-size: 1.15rem; max-width: 600px; margin: 0 auto 2.5rem; }
+
+        .hero-search { max-width: 600px; margin: 0 auto; position: relative; }
+
+        .hero-search input { width: 100%; padding: 1rem 1.5rem; border-radius: 50px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-primary); font-size: 1rem; outline: none; transition: border-color 0.3s; }
+
+        .hero-search input:focus { border-color: var(--accent); }
+
+        .hero-search input::placeholder { color: var(--text-muted); }
+
+        .hero-search button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, var(--accent), var(--accent-dark)); border: none; color: var(--bg-primary); padding: 0.7rem 1.8rem; border-radius: 50px; font-weight: 700; cursor: pointer; transition: transform 0.2s; }
+
+        .hero-search button:hover { transform: translateY(-50%) scale(1.05); }
+
+
+
+        /* ===== Categories ===== */
+
+        .categories { padding: 60px 2rem; max-width: 1400px; margin: 0 auto; }
+
+        .categories h2 { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; text-align: center; margin-bottom: 3rem; }
+
+        .categories h2 span { color: var(--accent); }
+
+        .cat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.5rem; }
+
+        .cat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 2rem 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; }
+
+        .cat-card:hover, .cat-card.active { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 8px 30px var(--accent-glow); }
+
+        .cat-card .icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+
+        .cat-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+
+        .cat-card p { color: var(--text-muted); font-size: 0.8rem; }
+
+
+
+        /* ===== Products ===== */
+
+        .products { padding: 40px 2rem 80px; max-width: 1400px; margin: 0 auto; }
+
+        .products-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+
+        .products-header h2 { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; }
+
+        .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        .filter-btn { padding: 0.4rem 1rem; border-radius: 50px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; transition: all 0.3s; }
+
+        .filter-btn.active, .filter-btn:hover { background: var(--accent); color: var(--bg-primary); border-color: var(--accent); font-weight: 600; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+
+        .product-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: all 0.3s; cursor: pointer; position: relative; }
+
+        .product-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 8px 30px var(--accent-glow); }
+
+        .product-img { width: 100%; height: 200px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
+
+        .product-img .badge { position: absolute; top: 12px; left: 12px; padding: 0.2rem 0.8rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; }
+
+        .badge-hot { background: #ef4444; color: #fff; }
+
+        .badge-new { background: var(--accent); color: var(--bg-primary); }
+
+        .badge-sale { background: var(--success); color: #fff; }
+
+        .product-info { padding: 1.2rem; }
+
+        .product-info h3 { font-size: 1rem; margin-bottom: 0.5rem; line-height: 1.4; }
+
+        .product-info .desc { color: var(--text-muted); font-size: 0.8rem; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .product-info .price-row { display: flex; align-items: center; justify-content: space-between; }
+
+        .price { display: flex; align-items: baseline; gap: 0.5rem; }
+
+        .price .current { color: var(--accent); font-weight: 700; font-size: 1.2rem; }
+
+        .price .original { color: var(--text-muted); font-size: 0.8rem; text-decoration: line-through; }
+
+        .add-cart-btn { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); border: none; color: var(--bg-primary); padding: 0.5rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: transform 0.2s; }
+
+        .add-cart-btn:hover { transform: scale(1.05); }
+
+
+
+        /* ===== Features ===== */
+
+        .features { padding: 80px 2rem; background: var(--bg-secondary); }
+
+        .features-inner { max-width: 1400px; margin: 0 auto; }
+
+        .features h2 { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; text-align: center; margin-bottom: 3rem; }
+
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+
+        .feature-card { text-align: center; padding: 2rem 1rem; }
+
+        .feature-card .icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+
+        .feature-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--accent); }
+
+        .feature-card p { color: var(--text-secondary); font-size: 0.9rem; }
+
+
+
+        /* ===== Cart Sidebar ===== */
+
+        .cart-sidebar { position: fixed; top: 0; right: 0; width: 380px; height: 100vh; background: var(--bg-secondary); border-left: 1px solid var(--border); z-index: 2000; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; }
+
+        .cart-sidebar.open { transform: translateX(0); }
+
+        .cart-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+
+        .cart-header h3 { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; }
+
+        .cart-close { background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+
+        .cart-items { flex: 1; overflow-y: auto; padding: 1.5rem; }
+
+        .cart-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+
+        .cart-item-img { width: 70px; height: 70px; background: var(--bg-card); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; flex-shrink: 0; }
+
+        .cart-item-info { flex: 1; }
+
+        .cart-item-info h4 { font-size: 0.9rem; margin-bottom: 0.3rem; }
+
+        .cart-item-info .price { color: var(--accent); font-weight: 700; font-size: 0.95rem; display: block; margin-bottom: 0.3rem; }
+
+        .qty-controls { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.4rem; }
+
+        .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-primary); cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; line-height: 1; }
+
+        .qty-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-glow); }
+
+        .qty-num { color: var(--accent); font-weight: 700; min-width: 18px; text-align: center; font-size: 0.95rem; }
+
+        .cart-item-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.8rem; margin-top: 0.3rem; }
+
+        .cart-item-remove:hover { color: #ef4444; }
+
+        .cart-footer { padding: 1.5rem; border-top: 1px solid var(--border); }
+
+        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 1.1rem; }
+
+        .cart-total strong { color: var(--accent); font-size: 1.3rem; }
+
+        .checkout-btn { width: 100%; padding: 1rem; border: none; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: var(--bg-primary); font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.2s; }
+
+        .checkout-btn:hover { transform: scale(1.02); }
+
+        .cart-empty { text-align: center; color: var(--text-muted); padding: 3rem 0; }
+
+        .cart-empty .icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+
+
+
+        /* ===== Modal ===== */
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 2rem; }
+
+        .modal-overlay.open { display: flex; }
+
+        .modal { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 20px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto; }
+
+        .modal-img { width: 100%; height: 300px; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; font-size: 6rem; border-radius: 20px 20px 0 0; }
+
+        .modal-info { padding: 2rem; }
+
+        .modal-info h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+
+        .modal-info .price { color: var(--accent); font-size: 1.8rem; font-weight: 900; margin-bottom: 1.5rem; display: block; }
+
+        .modal-info .desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.8; margin-bottom: 2rem; }
+
+        .modal-info .meta { display: flex; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap; }
+
+        .modal-info .meta-item { color: var(--text-muted); font-size: 0.85rem; }
+
+        .modal-info .meta-item strong { color: var(--text-primary); }
+
+        .modal-actions { display: flex; gap: 1rem; }
+
+        .modal-actions .add-cart-btn { flex: 1; padding: 1rem; border-radius: 10px; font-size: 1rem; }
+
+        .modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.5); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+
+
+
+        /* ===== Footer ===== */
+
+        footer { padding: 60px 2rem 30px; border-top: 1px solid var(--border); }
+
+        .footer-inner { max-width: 1400px; margin: 0 auto; }
+
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+
+        .footer-brand .logo { margin-bottom: 1rem; }
+
+        .footer-brand p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.8; }
+
+        .footer-col h4 { font-size: 1rem; margin-bottom: 1.2rem; color: var(--accent); }
+
+        .footer-col a { display: block; color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.6rem; transition: color 0.3s; }
+
+        .footer-col a:hover { color: var(--accent); }
+
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; }
+
+
+
+        /* ===== Toast ===== */
+
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--bg-card); border: 1px solid var(--accent); color: var(--text-primary); padding: 1rem 1.5rem; border-radius: 12px; z-index: 5000; transform: translateY(100px); opacity: 0; transition: all 0.4s; display: flex; align-items: center; gap: 0.8rem; }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        .toast .icon { font-size: 1.3rem; }
+
+
+
+        /* ===== Checkout Modal ===== */
+
+        .checkout-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 4000; display: none; align-items: center; justify-content: center; padding: 2rem; }
+
+        .checkout-overlay.open { display: flex; }
+
+        .checkout-modal { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 20px; max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto; }
+
+        .checkout-step { display: none; padding: 2rem; }
+
+        .checkout-step.active { display: block; }
+
+        .checkout-title { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; margin-bottom: 1.5rem; text-align: center; }
+
+        .checkout-title span { color: var(--accent); }
+
+        .order-summary { background: var(--bg-card); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; }
+
+        .order-summary-item { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+
+        .order-summary-item:last-child { border-bottom: none; font-weight: 700; color: var(--accent); font-size: 1rem; }
+
+        .order-summary-item .item-name { max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .form-group { margin-bottom: 1.2rem; }
+
+        .form-group label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
+
+        .form-group input, .form-group textarea { width: 100%; padding: 0.7rem 1rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-primary); font-size: 0.95rem; outline: none; transition: border-color 0.3s; }
+
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+
+        .form-group textarea { resize: vertical; min-height: 60px; }
+
+        .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+
+        .payment-method { background: var(--bg-card); border: 2px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.3s; }
+
+        .payment-method:hover { border-color: var(--accent); }
+
+        .payment-method.selected { border-color: var(--accent); background: var(--accent-glow); }
+
+        .payment-method .pm-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+
+        .payment-method .pm-name { font-weight: 600; font-size: 0.95rem; }
+
+        .payment-method .pm-desc { color: var(--text-muted); font-size: 0.75rem; margin-top: 0.3rem; }
+
+        .qr-box { text-align: center; padding: 1.5rem; }
+
+        .qr-box .qr-placeholder { width: 350px; height: 350px; background: #fff; border-radius: 12px; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+        .qr-box .qr-placeholder img { width: 320px; height: 320px; border-radius: 8px; }
+
+        .qr-box .qr-placeholder:hover { box-shadow: 0 0 20px rgba(99,102,241,0.3); }
+
+        .qr-box .qr-placeholder .no-qr { color: #999; font-size: 0.85rem; text-align: center; padding: 1rem; }
+
+        .qr-box p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+        .qr-box .pay-amount { color: var(--accent); font-size: 2rem; font-weight: 900; margin: 0.5rem 0; }
+
+        .qr-box .pay-tip { color: var(--text-muted); font-size: 0.8rem; }
+
+        .checkout-nav { display: flex; gap: 1rem; margin-top: 1.5rem; }
+
+        .checkout-nav button { flex: 1; padding: 0.9rem; border-radius: 10px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: transform 0.2s; border: none; }
+
+        .checkout-nav button:hover { transform: scale(1.02); }
+
+        .btn-prev { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border) !important; }
+
+        .btn-next { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: var(--bg-primary); }
+
+        .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+        .success-box { text-align: center; padding: 2rem 0; }
+
+        .success-box .big-icon { font-size: 4rem; margin-bottom: 1rem; display: block; }
+
+        .success-box h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+
+        .success-box p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.3rem; }
+
+        .success-box .order-id { color: var(--accent); font-family: 'Orbitron', sans-serif; font-size: 1.1rem; margin: 1rem 0; }
+
+        .order-history-btn { margin-top: 1.5rem; padding: 0.7rem 2rem; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); border-radius: 10px; cursor: pointer; font-size: 0.9rem; }
+
+        .order-history-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+
+
+        /* ===== Responsive ===== */
+
+        @media (max-width: 1024px) { .cat-grid { grid-template-columns: repeat(3, 1fr); } }
+
+        @media (max-width: 768px) {
+
+            nav ul { display: none; }
+
+            .mobile-menu-btn { display: block; }
+
+            .hero h1 { font-size: 2.2rem; }
+
+            .cat-grid { grid-template-columns: repeat(2, 1fr); }
+
+            .product-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+
+            .cart-sidebar { width: 100%; }
+
+        }
+
+
+        /* ===== Auth Modal ===== */
+        .auth-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 3000;
+            display: none; align-items: center; justify-content: center; padding: 2rem;
+        }
+        .auth-modal-overlay.open { display: flex; }
+        .auth-modal {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: 20px; max-width: 420px; width: 100%; padding: 2rem;
+        }
+        .auth-modal h2 { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center; }
+        .auth-modal .form-group { margin-bottom: 1.2rem; }
+        .auth-modal .form-group label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
+        .auth-modal .form-group input {
+            width: 100%; padding: 0.7rem 1rem; border-radius: 10px;
+            border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-primary); font-size: 0.95rem; outline: none;
+            transition: border-color 0.3s;
+        }
+        .auth-modal .form-group input:focus { border-color: var(--accent); }
+        .auth-modal .code-row { display: flex; gap: 0.8rem; }
+        .auth-modal .code-row input { flex: 1; }
+        .auth-modal .code-row button {
+            white-space: nowrap; padding: 0.7rem 1.2rem; border-radius: 10px;
+            border: 1px solid var(--accent); background: transparent;
+            color: var(--accent); font-weight: 600; cursor: pointer; transition: all 0.3s;
+        }
+        .auth-modal .code-row button:hover { background: var(--accent); color: var(--bg-primary); }
+        .auth-modal .btn-submit {
+            width: 100%; padding: 0.9rem; border-radius: 10px; border: none;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            color: var(--bg-primary); font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: transform 0.2s;
+        }
+        .auth-modal .btn-submit:hover { transform: scale(1.02); }
+        .auth-modal .toggle-link { text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--text-secondary); }
+        .auth-modal .toggle-link a { color: var(--accent); cursor: pointer; font-weight: 600; }
+        .auth-modal .close-btn {
+            position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.5);
+            border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; font-size: 1.2rem;
+        }
+        .auth-btn {
+            padding: 0.5rem 1.2rem; border-radius: 8px; border: 1px solid var(--border);
+            background: transparent; color: var(--text-primary); font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s; margin-left: 0.5rem;
+        }
+        .auth-btn.primary { background: var(--accent); border-color: var(--accent); color: var(--bg-primary); }
+        .auth-btn:hover { border-color: var(--accent); color: var(--accent); }
+        .auth-btn.primary:hover { background: var(--accent-dark); }
+        .error-msg { color: #ef4444; font-size: 0.8rem; margin-top: 0.3rem; display: none; }
+        .error-msg.show { display: block; }
+    </style>
+
+</head>
+
+<body>
+
+
+
+<!-- Header -->
+
+<header>
+
+    <div class="header-inner">
+
+        <div class="logo">BIGSE<span>DIGITAL STORE</span></div>
+
+        <nav>
+
+            <ul>
+
+                <li><a href="#" class="active">首页</a></li>
+
+                <li><a href="#courses">课程</a></li>
+
+                <li><a href="#software">软件</a></li>
+
+                <li><a href="#ebooks">电子书</a></li>
+
+                <li><a href="#fonts">字体</a></li>
+
+                <li><a href="#audio">音频</a></li>
+
+            </ul>
+
+        </nav>
+
+        <div class="header-actions">
+
+            <button class="cart-btn" onclick="toggleCart()">
+
+                🛒 购物车 <span class="cart-count" id="cartCount">0</span>
+
+            </button>
+
+            <button class="auth-btn" id="loginBtn" onclick="openAuthModal('login')">登录</button>
+            <button class="auth-btn primary" id="registerBtn" onclick="openAuthModal('register')">注册</button>
+            <div id="userInfo" style="display:none;align-items:center;gap:0.5rem;">
+                <span id="userEmail" style="color:var(--text-secondary);font-size:0.85rem;"></span>
+                <button class="auth-btn" onclick="logout()">退出</button>
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- Hero -->
+
+<section class="hero">
+
+    <h1>数字创造价值</h1>
+
+    <p>精选课程 · 实用软件 · 精品电子书 · 优质字体 · 原创音频 —— 一切数字产品，一站购齐</p>
+
+    <div class="hero-search">
+
+        <input type="text" placeholder="搜索课程、软件、电子书、字体、音频..." id="searchInput" onkeyup="handleSearch(event)">
+
+        <button onclick="handleSearch()">搜索</button>
+
+    </div>
+
+</section>
+
+
+
+<!-- Categories -->
+
+<section class="categories" id="courses">
+
+    <h2>探索 <span>数字产品</span> 分类</h2>
+
+    <div class="cat-grid">
+
+        <div class="cat-card active" onclick="filterCategory('all', this)">
+
+            <span class="icon">🏠</span>
+
+            <h3>全部产品</h3>
+
+            <p>浏览所有</p>
+
+        </div>
+
+        <div class="cat-card" onclick="filterCategory('course', this)">
+
+            <span class="icon">🎓</span>
+
+            <h3>精品课程</h3>
+
+            <p>Python·AI·自动化</p>
+
+        </div>
+
+        <div class="cat-card" onclick="filterCategory('software', this)">
+
+            <span class="icon">💻</span>
+
+            <h3>实用软件</h3>
+
+            <p>视频处理·自动化工具</p>
+
+        </div>
+
+        <div class="cat-card" onclick="filterCategory('ebook', this)">
+
+            <span class="icon">📚</span>
+
+            <h3>电子书</h3>
+
+            <p>技术·商业·创作</p>
+
+        </div>
+
+        <div class="cat-card" onclick="filterCategory('font', this)">
+
+            <span class="icon">✏️</span>
+
+            <h3>正版字体</h3>
+
+            <p>商用授权·艺术设计</p>
+
+        </div>
+
+        <div class="cat-card" onclick="filterCategory('audio', this)">
+
+            <span class="icon">🎵</span>
+
+            <h3>数字音频</h3>
+
+            <p>背景音乐·音效包</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- Products -->
+
+<section class="products">
+
+    <div class="products-header">
+
+        <h2 id="productSectionTitle">全部产品</h2>
+
+        <div class="filter-bar">
+
+            <button class="filter-btn active" onclick="filterPrice('all', this)">全部</button>
+
+            <button class="filter-btn" onclick="filterPrice('under50', this)">¥50以下</button>
+
+            <button class="filter-btn" onclick="filterPrice('50-200', this)">¥50-200</button>
+
+            <button class="filter-btn" onclick="filterPrice('over200', this)">¥200以上</button>
+
+        </div>
+
+    </div>
+
+    <div class="product-grid" id="productGrid">
+
+        <!-- Products injected by JS -->
+
+    </div>
+
+</section>
+
+
+
+<!-- Features -->
+
+<section class="features">
+
+    <div class="features-inner">
+
+        <h2>为什么选择 <span style="color:var(--accent)">大洋数字商城</span></h2>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+
+                <span class="icon">⚡</span>
+
+                <h3>即时交付</h3>
+
+                <p>支付后秒级自动发送下载链接，无需等待</p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <span class="icon">🔒</span>
+
+                <h3>安全支付</h3>
+
+                <p>支持微信/支付宝/银行卡，资金安全有保障</p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <span class="icon">♻️</span>
+
+                <h3>无限下载</h3>
+
+                <p>购买后永久拥有，随时重新下载</p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <span class="icon">🏆</span>
+
+                <h3>品质保证</h3>
+
+                <p>所有产品经过实测，不满意支持退款</p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <span class="icon">📞</span>
+
+                <h3>技术支持</h3>
+
+                <p>购买软件/课程享专属技术答疑服务</p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <span class="icon">🔄</span>
+
+                <h3>免费更新</h3>
+
+                <p>课程内容持续更新，软件版本终身升级</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- Footer -->
+
+<footer>
+
+    <div class="footer-inner">
+
+        <div class="footer-grid">
+
+            <div class="footer-brand">
+
+                <div class="logo">BIGSE<span>DIGITAL STORE</span></div>
+
+                <p>大洋数字商城 —— 专注数字产品交易，为创作者和开发者提供优质资源。</p>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>产品分类</h4>
+
+                <a href="#courses">精品课程</a>
+
+                <a href="#software">实用软件</a>
+
+                <a href="#ebooks">电子书</a>
+
+                <a href="#fonts">正版字体</a>
+
+                <a href="#audio">数字音频</a>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>帮助中心</h4>
+
+                <a href="#">如何购买</a>
+
+                <a href="#">下载问题</a>
+
+                <a href="#">退款政策</a>
+
+                <a href="#">联系客服</a>
+
+            </div>
+
+            <div class="footer-col">
+
+                <h4>联系我们</h4>
+
+                <a href="mailto:bigse@example.com">📧 bigse@example.com</a>
+
+                <a href="#">📱 微信：bigse_5705</a>
+
+                <a href="https://github.com/bigse">💻 GitHub</a>
+
+                <a href="https://space.bilibili.com/bigse">📺 B站</a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            © 2026 大洋 BIGSE · 数字商城 · 程序员 · 商人 · 自媒体
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+
+
+<!-- Auth Modal -->
+<div class="auth-modal-overlay" id="authModal">
+    <div class="auth-modal">
+        <button class="close-btn" onclick="closeAuthModal()">✕</button>
+        <h2 id="authTitle">注册</h2>
+        
+        <!-- Register Form -->
+        <div id="registerForm">
+            <div class="form-group">
+                <label>邮箱</label>
+                <input type="email" id="regEmail" placeholder="请输入邮箱">
+                <div class="error-msg" id="regEmailErr"></div>
+            </div>
+            <div class="form-group">
+                <label>验证码</label>
+                <div class="code-row">
+                    <input type="text" id="regCode" placeholder="6位验证码" maxlength="6">
+                    <button id="sendCodeBtn" onclick="sendCode()">发送验证码</button>
+                </div>
+                <div class="error-msg" id="regCodeErr"></div>
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" id="regPassword" placeholder="请设置密码（至少6位）">
+                <div class="error-msg" id="regPwdErr"></div>
+            </div>
+            <button class="btn-submit" onclick="register()">注册</button>
+            <div class="toggle-link">
+                已有账号？<a onclick="showLogin()">去登录</a>
+            </div>
+        </div>
+        
+        <!-- Login Form -->
+        <div id="loginForm" style="display:none;">
+            <div class="form-group">
+                <label>邮箱</label>
+                <input type="email" id="loginEmail" placeholder="请输入邮箱">
+                <div class="error-msg" id="loginEmailErr"></div>
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" id="loginPassword" placeholder="请输入密码">
+                <div class="error-msg" id="loginPwdErr"></div>
+            </div>
+            <button class="btn-submit" onclick="login()">登录</button>
+            <div class="toggle-link">
+                没有账号？<a onclick="showRegister()">去注册</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cart Sidebar -->
+
+<div class="cart-sidebar" id="cartSidebar">
+
+    <div class="cart-header">
+
+        <h3>🛒 购物车</h3>
+
+        <button class="cart-close" onclick="toggleCart()">✕</button>
+
+    </div>
+
+    <div class="cart-items" id="cartItems">
+
+        <div class="cart-empty" id="cartEmpty">
+
+            <span class="icon">🛒</span>
+
+            <p>购物车是空的</p>
+
+        </div>
+
+    </div>
+
+    <div class="cart-footer" id="cartFooter" style="display:none;">
+
+        <div class="cart-total">
+
+            <span>合计：</span>
+
+            <strong id="cartTotal">¥0</strong>
+
+        </div>
+
+        <button class="checkout-btn" onclick="checkout()">去结算</button>
+
+    </div>
+
+</div>
+
+
+
+<!-- Product Modal -->
+
+<div class="modal-overlay" id="productModal">
+
+    <div class="modal" id="modalContent">
+
+        <!-- injected by JS -->
+
+    </div>
+
+</div>
+
+
+
+<!-- Checkout Modal -->
+
+<div class="checkout-overlay" id="checkoutOverlay">
+
+    <div class="checkout-modal">
+
+        <!-- Step 1: Order Confirmation -->
+
+        <div class="checkout-step active" id="step1">
+
+            <div class="checkout-title">📋 确认 <span>订单</span></div>
+
+            <div class="order-summary" id="orderSummary"></div>
+
+            <div class="form-group">
+
+                <label>姓名 / 昵称（选填）</label>
+
+                <input type="text" id="custName" placeholder="选填，方便联系发货">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>联系方式（选填）</label>
+
+                <input type="text" id="custContact" placeholder="方便联系你发货">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>备注（选填）</label>
+
+                <textarea id="custNote" placeholder="如有特殊需求请在此说明"></textarea>
+
+            </div>
+
+            <div class="checkout-nav">
+
+                <button class="btn-prev" onclick="closeCheckout()">取消</button>
+
+                <button class="btn-next" onclick="goStep(2)">下一步：选择支付 →</button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Step 2: Payment Method -->
+
+        <div class="checkout-step" id="step2">
+
+            <div class="checkout-title">💳 选择 <span>支付方式</span></div>
+
+            <div class="payment-methods">
+
+                <div class="payment-method" id="pmWechat" onclick="selectPayment('wechat')">
+
+                    <span class="pm-icon">💚</span>
+
+                    <div class="pm-name">微信支付</div>
+
+                    <div class="pm-desc">扫码转账</div>
+
+                </div>
+
+                <div class="payment-method" id="pmAlipay" onclick="selectPayment('alipay')">
+
+                    <span class="pm-icon">💙</span>
+
+                    <div class="pm-name">支付宝</div>
+
+                    <div class="pm-desc">扫码转账</div>
+
+                </div>
+
+            </div>
+
+            <div class="checkout-nav">
+
+                <button class="btn-prev" onclick="goStep(1)">← 上一步</button>
+
+                <button class="btn-next" id="btnPay" onclick="goStep(3);">确认支付 →</button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Step 3: QR Code Payment -->
+
+        <div class="checkout-step" id="step3">
+
+            <div class="checkout-title">📲 扫码 <span>付款</span></div>
+
+            <div class="qr-box">
+
+                <div id="qrImage" class="qr-placeholder">
+
+                    <div class="no-qr">二维码加载中...</div>
+
+                </div>
+
+                <p id="payMethodName">请使用微信扫码支付</p>
+
+                <div class="pay-amount" id="payAmount">¥0</div>
+
+                <p class="pay-tip">⚠️ 请务必备注订单号，付款后点击下方「我已完成付款」</p>
+
+                <p class="pay-tip" id="payOrderId" style="color:var(--accent);font-weight:700;margin-top:0.5rem;"></p>
+
+            </div>
+
+            <div class="checkout-nav">
+
+                <button class="btn-prev" onclick="goStep(2)">← 上一步</button>
+
+                <button class="btn-next" onclick="confirmPayment()">✅ 我已完成付款</button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- Step 4: Success -->
+
+        <div class="checkout-step" id="step4">
+
+            <div class="success-box">
+
+                <span class="big-icon" id="step4Icon">⏳</span>
+
+                <h3 id="step4Title">订单提交成功！</h3>
+
+                <p id="step4Desc">扫码付款后，系统将自动确认并发货...</p>
+
+                <div class="order-id" id="successOrderId"></div>
+
+                <div id="step4DownloadArea" style="display:none;margin-top:1.2rem;padding:1rem;background:var(--bg-card);border-radius:12px;text-align:left;">
+
+                    <div style="color:var(--accent);font-weight:700;margin-bottom:0.8rem;font-size:1rem;">📦 立即下载</div>
+
+                    <div id="step4Links"></div>
+
+                    <p style="color:var(--text-muted);font-size:0.75rem;margin-top:0.8rem;">下载中断可随时点击链接重新下载，链接72小时有效</p>
+
+                </div>
+
+                <div id="step4Waiting" style="margin-top:1rem;">
+
+                    <div style="display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;"></div>
+
+                    <span style="margin-left:0.5rem;color:var(--text-muted);font-size:0.9rem;">正在等待商家确认...</span>
+
+                </div>
+
+                <button class="order-history-btn" onclick="closeCheckout();" style="margin-top:1rem;">返回商店</button>
+
+            </div>
+
+        </div>
+
+        <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+
+    </div>
+
+</div>
+
+
+
+<!-- Toast -->
+
+<div class="toast" id="toast">
+
+    <span class="icon">✅</span>
+
+    <span id="toastMsg">已添加到购物车</span>
+
+</div>
+
+
+
+<script>
+
+    // ===== Product Data =====
+
+    const products = [
+
+        { id: 1, name: 'Python全栈开发实战课', category: 'course', price: 0.1, originalPrice: 399, badge: 'hot', icon: '🐍', desc: '从零基础到全栈开发，涵盖Web、爬虫、数据分析、AI接口调用，附完整项目源码。', meta: { duration: '42小时', level: '零基础', updates: '终身免费更新' } },
+
+        { id: 2, name: 'AI自动化办公大师课', category: 'course', price: 0.1, originalPrice: 299, badge: 'hot', icon: '🤖', desc: '用AI助手+Python实现办公自动化，Excel处理、文档生成、邮件群发一键搞定。', meta: { duration: '28小时', level: '入门', updates: '免费更新1年' } },
+
+        { id: 3, name: '短视频变现全攻略', category: 'course', price: 0.1, originalPrice: 199, badge: 'new', icon: '🎬', desc: '从0到1打造变现短视频账号，涵盖选题、拍摄、剪辑、运营、带货全链路。', meta: { duration: '20小时', level: '零基础', updates: '免费更新6个月' } },
+
+        { id: 4, name: 'VideoGenius 视频处理套装', category: 'software', price: 0.1, originalPrice: null, badge: 'hot', icon: '🎥', desc: '一站式视频处理工具集：智能剪辑、自动配音、字幕生成、特效合成，支持批量处理。', meta: { platform: 'Windows', license: '永久授权', support: '技术支持' } },
+
+        { id: 5, name: 'SnookerClips 斯诺克剪辑助手', category: 'software', price: 0.1, originalPrice: null, badge: 'new', icon: '🎱', desc: '自动识别斯诺克精彩片段，智能剪辑+配乐+字幕，一键生成短视频。', meta: { platform: 'Windows', license: '永久授权', support: '技术支持' } },
+
+        { id: 6, name: 'DataMiner Pro 数据采集器', category: 'software', price: 0.1, originalPrice: null, badge: null, icon: '📊', desc: '可视化数据采集工具，无需编程，拖拽式配置，支持导出Excel/JSON/CSV。', meta: { platform: 'Windows/Mac', license: '永久授权', support: '技术支持' } },
+
+        { id: 7, name: 'Python编程：从入门到实践（PDF+EPUB）', category: 'ebook', price: 0.1, originalPrice: null, badge: 'sale', icon: '📘', desc: '全彩版电子书，含完整代码示例+习题答案+项目实战，适合自学和教学。', meta: { format: 'PDF+EPUB', pages: '680页', lang: '中文' } },
+
+        { id: 8, name: 'AI时代的数据变现指南', category: 'ebook', price: 0.1, originalPrice: null, badge: 'new', icon: '💰', desc: '教你如何用数据创造价值：数据清洗、打包、定价、销售渠道全解析。', meta: { format: 'PDF', pages: '320页', lang: '中文' } },
+
+        { id: 9, name: '短视频算法推荐机制深度解析', category: 'ebook', price: 0.1, originalPrice: null, badge: 'sale', icon: '📱', desc: '抖音/B站/视频号推荐算法全解析，帮你快速突破流量瓶颈。', meta: { format: 'PDF', pages: '180页', lang: '中文' } },
+
+        { id: 10, name: '商用正版 科技感无衬线字体', category: 'font', price: 0.1, originalPrice: null, badge: null, icon: '🔤', desc: '包含6款科技感字体，支持中文+英文，个人/商业授权，适合视频标题/海报/Logo。', meta: { fonts: '6款', license: '商业授权', format: 'TTF/OTF' } },
+
+        { id: 11, name: '手写风艺术字体包（10款）', category: 'font', price: 0.1, originalPrice: 129, badge: 'sale', icon: '✍️', desc: '10款精美手写风字体，适合婚礼请柬、海报标题、社交媒体配图。', meta: { fonts: '10款', license: '个人+商业', format: 'TTF/OTF' } },
+
+        { id: 12, name: '编程代码专用等宽字体', category: 'font', price: 0.1, originalPrice: null, badge: 'new', icon: '👨‍💻', desc: '专为程序员设计，支持ASCII+中文，IDE/代码编辑器完美显示，保护视力。', meta: { fonts: '3款', license: '开源免费', format: 'TTF/OTF' } },
+
+        { id: 13, name: '短视频爆款BGM合集 Vol.1', category: 'audio', price: 0.1, originalPrice: null, badge: 'hot', icon: '🎵', desc: '50首无版权短视频BGM，涵盖搞笑、科技、生活、教程四类风格，MP3/WAV双格式。', meta: { tracks: '50首', format: 'MP3+WAV', license: '商用授权' } },
+
+        { id: 14, name: '科技感音效包（200+）', category: 'audio', price: 0.1, originalPrice: null, badge: null, icon: '🔊', desc: '200+科技感音效：UI交互、转场、提示音、按钮音，WAV高质量格式。', meta: { tracks: '200+', format: 'WAV', license: '商用授权' } },
+
+        { id: 15, name: '斯诺克主题背景音乐包', category: 'audio', price: 0.1, originalPrice: null, badge: 'new', icon: '🎱', desc: '15首斯诺克/台球主题背景音乐，适合视频配乐，MP3格式，个人+商业授权。', meta: { tracks: '15首', format: 'MP3', license: '商用授权' } },
+
+        { id: 16, name: 'RVC音色转换工具包', category: 'software', price: 0.1, originalPrice: null, badge: 'hot', icon: '🎤', desc: '基于RVC的AI音色转换完整工具包，含模型+教程，支持自定义音色训练。', meta: { platform: 'Windows', license: '永久授权', support: '教程+模型' } },
+
+        { id: 17, name: 'AI智能抠图工具 v1.0', category: 'software', price: 0.01, originalPrice: null, badge: 'hot', icon: '✂️', desc: '一键智能抠图，基于rembg AI模型，支持JPG/PNG/WEBP/BMP，无需安装Python，双击即用。', meta: { platform: 'Windows', license: '永久授权', size: '265MB' } },
+
+    ];
+
+
+
+    let cart = [];
+
+    let currentCategory = 'all';
+
+    let currentPriceFilter = 'all';
+
+
+
+    // ===== Render Products =====
+
+    function renderProducts() {
+
+        const grid = document.getElementById('productGrid');
+
+        let filtered = products;
+
+
+
+        if (currentCategory !== 'all') {
+
+            filtered = filtered.filter(p => p.category === currentCategory);
+
+        }
+
+        if (currentPriceFilter !== 'all') {
+
+            if (currentPriceFilter === 'under50') filtered = filtered.filter(p => p.price < 50);
+
+            if (currentPriceFilter === '50-200') filtered = filtered.filter(p => p.price >= 50 && p.price <= 200);
+
+            if (currentPriceFilter === 'over200') filtered = filtered.filter(p => p.price > 200);
+
+        }
+
+
+
+        if (filtered.length === 0) {
+
+            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:3rem;">暂无符合条件的产品</div>';
+
+            return;
+
+        }
+
+
+
+        grid.innerHTML = filtered.map(p => `
+
+            <div class="product-card" onclick="openModal(${p.id})">
+
+                <div class="product-img">
+
+                    ${p.badge ? `<span class="badge badge-${p.badge}">${p.badge === 'hot' ? '热门' : p.badge === 'new' ? '新品' : '特价'}</span>` : ''}
+
+                    ${p.icon}
+
+                </div>
+
+                <div class="product-info">
+
+                    <h3>${p.name}</h3>
+
+                    <p class="desc">${p.desc}</p>
+
+                    <div class="price-row">
+
+                        <div class="price">
+
+                            <span class="current">¥${p.price}</span>
+
+                            ${p.originalPrice ? `<span class="original">¥${p.originalPrice}</span>` : ''}
+
+                        </div>
+
+                        <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart(${p.id})">+ 加入购物车</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join('');
+
+    }
+
+
+
+    // ===== Category Filter =====
+
+    function filterCategory(cat, el) {
+
+        currentCategory = cat;
+
+        document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+
+        if (el) el.classList.add('active');
+
+        const titles = { all: '全部产品', course: '精品课程', software: '实用软件', ebook: '电子书', font: '正版字体', audio: '数字音频' };
+
+        document.getElementById('productSectionTitle').textContent = titles[cat] || '全部产品';
+
+        renderProducts();
+        checkAuth();
+
+    }
+
+
+
+    // ===== Price Filter =====
+
+    function filterPrice(range, el) {
+
+        currentPriceFilter = range;
+
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+
+        if (el) el.classList.add('active');
+
+        renderProducts();
+
+    }
+
+
+
+    // ===== Cart =====
+
+    function addToCart(id) {
+
+        const product = products.find(p => p.id === id);
+
+        const existing = cart.find(item => item.id === id);
+
+        if (existing) {
+
+            existing.qty++;
+
+        } else {
+
+            cart.push({ ...product, qty: 1 });
+
+        }
+
+        updateCartUI();
+
+        showToast(`「${product.name}」已加入购物车`);
+
+    }
+
+
+
+    function increaseQty(id) {
+
+        const item = cart.find(i => i.id === id);
+
+        if (item) { item.qty++; updateCartUI(); }
+
+    }
+
+
+
+    function decreaseQty(id) {
+
+        const item = cart.find(i => i.id === id);
+
+        if (!item) return;
+
+        if (item.qty <= 1) { removeFromCart(id); return; }
+
+        item.qty--;
+
+        updateCartUI();
+
+    }
+
+
+
+    function removeFromCart(id) {
+
+        cart = cart.filter(item => item.id !== id);
+
+        updateCartUI();
+
+    }
+
+
+
+    function updateCartUI() {
+
+        const count = cart.reduce((s, item) => s + item.qty, 0);
+
+        document.getElementById('cartCount').textContent = count;
+
+        const cartItems = document.getElementById('cartItems');
+
+        const cartFooter = document.getElementById('cartFooter');
+
+        const cartEmpty = document.getElementById('cartEmpty');
+
+
+
+        if (cart.length === 0) {
+
+            cartItems.innerHTML = '<div class="cart-empty" id="cartEmpty"><span class="icon">🛒</span><p>购物车是空的</p></div>';
+
+            cartFooter.style.display = 'none';
+
+            return;
+
+        }
+
+
+
+        cartFooter.style.display = 'block';
+
+        const total = cart.reduce((s, item) => s + item.price * item.qty, 0);
+
+        document.getElementById('cartTotal').textContent = `¥${total}`;
+
+
+
+        cartItems.innerHTML = cart.map(item => `
+
+            <div class="cart-item">
+
+                <div class="cart-item-img">${item.icon}</div>
+
+                <div class="cart-item-info">
+
+                    <h4>${item.name}</h4>
+
+                    <span class="price">¥${item.price} × ${item.qty}</span>
+
+                    <div class="qty-controls">
+
+                        <button class="qty-btn" onclick="event.stopPropagation(); decreaseQty(${item.id})" title="减少数量">−</button>
+
+                        <span class="qty-num">${item.qty}</span>
+
+                        <button class="qty-btn" onclick="event.stopPropagation(); increaseQty(${item.id})" title="增加数量">+</button>
+
+                        <button class="cart-item-remove" onclick="event.stopPropagation(); removeFromCart(${item.id})" style="margin-left:auto;font-size:0.75rem;">移除</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join('');
+
+    }
+
+
+
+    function toggleCart() {
+
+        document.getElementById('cartSidebar').classList.toggle('open');
+
+    }
+
+
+
+    function checkout() {
+
+        if (cart.length === 0) return;
+
+        toggleCart(); // close cart sidebar
+
+        openCheckout();
+
+    }
+
+
+
+    // ===== Checkout Flow =====
+
+    let checkoutPayment = '';
+
+    let currentOrderId = '';
+
+
+
+    function generateOrderId() {
+
+        const now = new Date();
+
+        const ts = now.getFullYear().toString().slice(2) +
+
+            String(now.getMonth()+1).padStart(2,'0') +
+
+            String(now.getDate()).padStart(2,'0') +
+
+            String(now.getHours()).padStart(2,'0') +
+
+            String(now.getMinutes()).padStart(2,'0') +
+
+            String(now.getSeconds()).padStart(2,'0');
+
+        return 'BS' + ts + Math.floor(Math.random()*100).toString().padStart(2,'0');
+
+    }
+
+
+
+    function openCheckout() {
+
+        // Reset
+
+        checkoutPayment = '';
+
+        currentOrderId = '';
+
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+
+        document.getElementById('btnPay').disabled = true;
+
+        document.getElementById('custName').value = '';
+
+        document.getElementById('custContact').value = '';
+
+        document.getElementById('custNote').value = '';
+
+
+
+        // Build order summary
+
+        const summary = document.getElementById('orderSummary');
+
+        let html = '';
+
+        let total = 0;
+
+        cart.forEach(item => {
+
+            html += `<div class="order-summary-item"><span class="item-name">${item.icon} ${item.name} × ${item.qty}</span><span>¥${item.price * item.qty}</span></div>`;
+
+            total += item.price * item.qty;
+
+        });
+
+        html += `<div class="order-summary-item"><span>合计</span><span>¥${total}</span></div>`;
+
+        summary.innerHTML = html;
+
+
+
+        // Show step 1
+
+        goStep(1);
+
+        document.getElementById('checkoutOverlay').classList.add('open');
+
+    }
+
+
+
+    function closeCheckout() {
+
+        document.getElementById('checkoutOverlay').classList.remove('open');
+
+    }
+
+
+
+    function goStep(n) {
+
+        // Validate before moving forward
+
+        // Step 2: no required fields
+
+        if (n === 3 && !checkoutPayment) {
+
+            checkoutPayment = 'wechat';
+
+        }
+
+
+
+        // Generate order ID on step 3
+
+        if (n === 3) {
+
+            currentOrderId = generateOrderId();
+
+            const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+            document.getElementById('payAmount').textContent = `¥${total}`;
+
+            document.getElementById('payOrderId').textContent = `订单号：${currentOrderId}`;
+
+
+
+            // Set QR code
+
+            const qrDiv = document.getElementById('qrImage');
+
+            let qrSrc, payLabel;
+            if (checkoutPayment === 'alipay') { qrSrc = 'https://bigsea78.oss-cn-hongkong.aliyuncs.com/qr_alipay.jpg'; payLabel = '支付宝'; } else { qrSrc = 'https://bigsea78.oss-cn-hongkong.aliyuncs.com/qr_wechat.png'; payLabel = '微信'; };
+
+            document.getElementById('payMethodName').textContent = `请使用${payLabel}扫码支付`;
+
+            qrDiv.innerHTML = `<img src="${qrSrc}" alt="${payLabel}收款码" onclick="openQrModal(this.src)" style="cursor:pointer" onerror="this.parentElement.innerHTML='<div class=\'no-qr\'>请将收款码图片放入同目录<br>文件名：${qrSrc}</div>'">`;
+
+        }
+
+
+
+        document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+
+        document.getElementById('step' + n).classList.add('active');
+
+    }
+
+
+
+    function selectPayment(method) {
+
+        checkoutPayment = method;
+
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+
+            if (checkoutPayment === 'alipay') {
+                document.getElementById('pmAlipay').classList.add('selected');
+            } else {
+                document.getElementById('pmWechat').classList.add('selected');
+            }
+
+        document.getElementById('btnPay').disabled = false;
+
+    }
+
+
+
+    const API_BASE = 'https://bigsea78-payment-api-production.up.railway.app';
+
+
+
+    function confirmPayment() {
+
+        const customer = document.getElementById('custName').value.trim();
+
+        const contact = document.getElementById('custContact').value.trim();
+
+        const note = document.getElementById('custNote').value.trim();
+
+
+
+        // 提交订单到后端
+
+        fetch(API_BASE + '/api/orders', {
+
+            method: 'POST',
+
+            headers: {'Content-Type': 'application/json'},
+
+            body: JSON.stringify({
+
+                items: cart.map(i => ({id: i.id, qty: i.qty})),
+
+                customer: customer,
+
+                contact: contact,
+
+                note: note,
+
+                payment: checkoutPayment
+
+            })
+
+        })
+
+        .then(r => r.json())
+
+        .then(data => {
+
+            if (data.error) {
+
+                showToast('❌ ' + data.error);
+
+                return;
+
+            }
+
+            currentOrderId = data.orderId;
+
+            // Notify admin that user claimed payment
+            fetch(`${API_BASE}/api/orders/${currentOrderId}/confirm`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({})
+            }).then(r => r.json()).then(d => {
+                console.log('[Payment] Admin notified:', d);
+            }).catch(e => console.error('[Payment] Notify failed:', e));
+
+            goStep(4);
+
+            // Clear cart
+
+            cart = [];
+
+            updateCartUI();
+
+
+
+            if (data.downloadTokens && data.downloadTokens.length > 0) {
+
+                showDownloadLinks(data.downloadTokens);
+
+            } else {
+
+                // Wait for phone payment confirmation
+
+                startOrderPolling(data.orderId);
+
+            }
+
+        })
+
+        .catch(err => {
+
+            showToast('❌ 网络错误，请检查后端服务是否启动');
+
+            console.error(err);
+
+        });
+
+    }
+
+
+
+    function showDownloadLinks(tokens) {
+
+        document.getElementById('step4Icon').textContent = '🎉';
+
+        document.getElementById('step4Title').textContent = '付款成功！';
+
+        document.getElementById('step4Desc').textContent = '点击下方按钮下载，下载中断可随时重新点击';
+
+        document.getElementById('step4Waiting').style.display = 'none';
+
+        document.getElementById('step4DownloadArea').style.display = 'block';
+
+        document.getElementById('successOrderId').textContent = currentOrderId;
+
+        let linksHtml = '';
+
+        tokens.forEach(t => {
+
+            const dlUrl = API_BASE + '/download/' + t.token;
+
+            linksHtml += `<div style="margin:0.5rem 0;display:flex;align-items:center;gap:0.5rem;">
+
+                <span style="flex:1;font-size:0.9rem;">${t.productName}</span>
+
+                <a href="${dlUrl}" download style="display:inline-block;padding:0.4rem 1rem;background:var(--accent);color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:0.85rem;white-space:nowrap;">💾 下载</a>
+
+                <a href="${dlUrl}" target="_blank" style="color:var(--text-muted);font-size:0.75rem;text-decoration:none;">(新窗口)</a>
+
+            </div>`;
+
+        });
+
+        document.getElementById('step4Links').innerHTML = linksHtml;
+
+        // Auto-trigger first download
+
+        const firstDl = API_BASE + '/download/' + tokens[0].token;
+
+        const a = document.createElement('a');
+
+        a.href = firstDl; a.download = ''; document.body.appendChild(a); a.click(); a.remove();
+
+    }
+
+
+
+    // 轮询订单状态，付款确认后自动跳转下载页
+
+    let pollingTimer = null;
+
+    function startOrderPolling(orderId) {
+
+        if (pollingTimer) clearInterval(pollingTimer);
+
+        pollingTimer = setInterval(() => {
+
+            fetch(API_BASE + '/api/orders/' + orderId + '/status')
+
+            .then(r => r.json())
+
+            .then(data => {
+
+                if (data.status === 'delivered') {
+
+                    clearInterval(pollingTimer);
+
+                    pollingTimer = null;
+
+                    // 查询完整订单获取下载链接
+
+                    fetch(API_BASE + '/api/orders/' + orderId)
+
+                    .then(r => r.json())
+
+                    .then(order => {
+
+                        if (order.downloadTokens && order.downloadTokens.length > 0) {
+
+                            // Show download area
+
+                            document.getElementById('step4Icon').textContent = '🎉';
+
+                            document.getElementById('step4Title').textContent = '付款已确认！';
+
+                            document.getElementById('step4Desc').textContent = '点击下方按钮下载，下载中断可随时重新点击';
+
+                            document.getElementById('step4Waiting').style.display = 'none';
+
+                            document.getElementById('step4DownloadArea').style.display = 'block';
+
+                            showDownloadLinks(order.downloadTokens);
+
+                        }
+
+                    });
+
+                }
+
+            })
+
+            .catch(() => {});
+
+        }, 2000); // 每2秒轮询
+
+    }
+
+
+
+    function viewOrders() {
+
+        showToast('请访问管理后台查看订单');
+
+    }
+
+
+
+    // ===== Product Modal =====
+
+    function openModal(id) {
+
+        const p = products.find(p => p.id === id);
+
+        const modal = document.getElementById('productModal');
+
+        const content = document.getElementById('modalContent');
+
+        content.innerHTML = `
+
+            <div class="modal-img">${p.icon}</div>
+
+            <div class="modal-info">
+
+                <button class="modal-close" onclick="closeModal()">✕</button>
+
+                <h2>${p.name}</h2>
+
+                <span class="price">¥${p.price}${p.originalPrice ? ` <small style="color:var(--text-muted);text-decoration:line-through;font-size:0.9rem;">¥${p.originalPrice}</small>` : ''}</span>
+
+                <p class="desc">${p.desc}</p>
+
+                <div class="meta">
+
+                    ${Object.entries(p.meta).map(([k,v]) => `<div class="meta-item"><strong>${k === 'duration' ? '课程时长' : k === 'level' ? '难度级别' : k === 'updates' ? '更新服务' : k === 'platform' ? '支持平台' : k === 'license' ? '授权方式' : k === 'support' ? '售后服务' : k === 'format' ? '文件格式' : k === 'pages' ? '页数' : k === 'lang' ? '语言' : k === 'fonts' ? '字体数量' : k === 'tracks' ? '音频数量' : k}</strong>：${v}</div>`).join('')}
+
+                </div>
+
+                <div class="modal-actions">
+
+                    <button class="add-cart-btn" onclick="addToCart(${p.id}); closeModal();">🛒 加入购物车</button>
+
+                </div>
+
+            </div>
+
+        `;
+
+        modal.classList.add('open');
+
+    }
+
+
+
+    function closeModal() {
+
+        document.getElementById('productModal').classList.remove('open');
+
+    }
+
+
+
+    // ===== Toast =====
+
+    function showToast(msg) {
+
+        const toast = document.getElementById('toast');
+
+        document.getElementById('toastMsg').textContent = msg;
+
+        toast.classList.add('show');
+
+        setTimeout(() => toast.classList.remove('show'), 2500);
+
+    }
+
+
+
+    // ===== Search =====
+
+    function handleSearch(e) {
+
+        if (e && e.key !== 'Enter') return;
+
+        const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+
+        if (!keyword) { renderProducts(); return; }
+
+        const grid = document.getElementById('productGrid');
+
+        const filtered = products.filter(p => p.name.toLowerCase().includes(keyword) || p.desc.toLowerCase().includes(keyword));
+
+        if (filtered.length === 0) {
+
+            grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-muted);padding:3rem;">未找到相关产品，换个关键词试试？</div>';
+
+            return;
+
+        }
+
+        grid.innerHTML = filtered.map(p => `
+
+            <div class="product-card" onclick="openModal(${p.id})">
+
+                <div class="product-img">${p.icon}</div>
+
+                <div class="product-info">
+
+                    <h3>${p.name}</h3>
+
+                    <p class="desc">${p.desc}</p>
+
+                    <div class="price-row">
+
+                        <div class="price"><span class="current">¥${p.price}</span>${p.originalPrice ? `<span class="original">¥${p.originalPrice}</span>` : ''}</div>
+
+                        <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart(${p.id})">+ 加入购物车</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `).join('');
+
+    }
+
+
+
+    // ===== Init =====
+
+    renderProducts();
+
+
+
+    // ===== Payment Confirmation =====
+
+    function confirmPayment() {
+
+        if (!currentOrderId) {
+
+            showToast('❌ 未找到订单，请重新下单');
+
+            return;
+
+        }
+
+        showToast('⏳ 正在确认付款...');
+
+        fetch(API_BASE + '/api/orders/' + currentOrderId + '/confirm', {
+
+            method: 'POST'
+
+        })
+
+        .then(r => r.json())
+
+        .then(data => {
+
+            if (data.error) {
+
+                showToast('❌ ' + data.error);
+
+                return;
+
+            }
+
+            // 成功：显示下载链接
+
+            document.getElementById('step4Icon').textContent = '🎉';
+
+            document.getElementById('step4Title').textContent = '付款已确认！';
+
+            document.getElementById('step4Desc').textContent = '点击下方按钮下载，下载中断可随时重新点击';
+
+            document.getElementById('step4Waiting').style.display = 'none';
+
+            document.getElementById('step4DownloadArea').style.display = 'block';
+
+            showDownloadLinks(data.downloadTokens);
+
+        })
+
+        .catch(err => {
+
+            showToast('❌ 网络错误');
+
+            console.error(err);
+
+        });
+
+    }
+
+
+
+    </script>
+
+
+
+<!-- QR Code Modal -->
+
+    <div id="qrModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;justify-content:center;align-items:center;cursor:pointer;" onclick="closeQrModal()">
+
+        <img id="qrModalImg" src="" alt="放大二维码" style="max-width:90vw;max-height:90vh;border-radius:16px;box-shadow:0 0 60px rgba(99,102,241,0.5);">
+
+    </div>
+
+    <script>
+
+        function openQrModal(src) {
+
+            document.getElementById('qrModalImg').src = src;
+
+            document.getElementById('qrModal').style.display = 'flex';
+
+            document.body.style.overflow = 'hidden';
+
+        }
+
+        function closeQrModal() {
+
+            document.getElementById('qrModal').style.display = 'none';
+
+            document.body.style.overflow = '';
+
+        }
+
+        document.addEventListener('keydown', e => { if(e.key==='Escape') closeQrModal(); });
+
+    
+
+    // ===== Auth System =====
+    let authToken = localStorage.getItem('bs78_token') || '';
+    let currentUser = null;
+
+    function openAuthModal(mode = 'register') {
+        const overlay = document.getElementById('authModal');
+        overlay.classList.add('open');
+        if (mode === 'login') showLogin();
+        else showRegister();
+    }
+
+    function closeAuthModal() {
+        document.getElementById('authModal').classList.remove('open');
+        document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('show'));
+    }
+
+    function showRegister() {
+        document.getElementById('authTitle').textContent = '注册';
+        document.getElementById('registerForm').style.display = 'block';
+        document.getElementById('loginForm').style.display = 'none';
+    }
+
+    function showLogin() {
+        document.getElementById('authTitle').textContent = '登录';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('loginForm').style.display = 'block';
+    }
+
+    let codeCooldown = 0;
+    async function sendCode() {
+        const email = document.getElementById('regEmail').value.trim();
+        if (!email) {
+            showError('regEmailErr', '请输入邮箱');
+            return;
+        }
+        
+        const btn = document.getElementById('sendCodeBtn');
+        btn.disabled = true;
+        codeCooldown = 60;
+        
+        try {
+            const res = await fetch(API_BASE + '/api/send-code', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email})
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || '发送失败');
+            showToast('✅ 验证码已发送');
+        } catch (e) {
+            showToast('❌ ' + e.message, true);
+            btn.disabled = false;
+            codeCooldown = 0;
+            return;
+        }
+        
+        const timer = setInterval(() => {
+            codeCooldown--;
+            btn.textContent = `${codeCooldown}s 后重发`;
+            if (codeCooldown <= 0) {
+                clearInterval(timer);
+                btn.textContent = '发送验证码';
+                btn.disabled = false;
+            }
+        }, 1000);
+    }
+
+    async function register() {
+        const email = document.getElementById('regEmail').value.trim();
+        const code = document.getElementById('regCode').value.trim();
+        const password = document.getElementById('regPassword').value;
+        
+        if (!email || !code || !password) {
+            showToast('❌ 请填写完整信息', true);
+            return;
+        }
+        if (password.length < 6) {
+            showToast('❌ 密码至少6位', true);
+            return;
+        }
+        
+        try {
+            const res = await fetch(API_BASE + '/api/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, password: md5(password), code})
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || '注册失败');
+            
+            authToken = data.token;
+            localStorage.setItem('bs78_token', authToken);
+            currentUser = email;
+            closeAuthModal();
+            updateAuthUI();
+            showToast('✅ 注册成功！');
+        } catch (e) {
+            showToast('❌ ' + e.message, true);
+        }
+    }
+
+    async function login() {
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        
+        if (!email || !password) {
+            showToast('❌ 请填写完整信息', true);
+            return;
+        }
+        
+        try {
+            const res = await fetch(API_BASE + '/api/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, password: md5(password)})
+            });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.detail || '登录失败');
+            
+            authToken = data.token;
+            localStorage.setItem('bs78_token', authToken);
+            currentUser = email;
+            closeAuthModal();
+            updateAuthUI();
+            showToast('✅ 登录成功！');
+        } catch (e) {
+            showToast('❌ ' + e.message, true);
+        }
+    }
+
+    function logout() {
+        authToken = '';
+        currentUser = null;
+        localStorage.removeItem('bs78_token');
+        updateAuthUI();
+        showToast('✅ 已退出登录');
+    }
+
+    function updateAuthUI() {
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const userInfo = document.getElementById('userInfo');
+        const userEmail = document.getElementById('userEmail');
+        
+        if (authToken && currentUser) {
+            loginBtn.style.display = 'none';
+            registerBtn.style.display = 'none';
+            userInfo.style.display = 'flex';
+            userEmail.textContent = currentUser;
+        } else {
+            loginBtn.style.display = 'inline-block';
+            registerBtn.style.display = 'inline-block';
+            userInfo.style.display = 'none';
+        }
+    }
+
+    function showError(id, msg) {
+        const el = document.getElementById(id);
+        el.textContent = msg;
+        el.classList.add('show');
+    }
+
+    // 点击遮罩关闭
+    document.getElementById('authModal').addEventListener('click', function(e) {
+        if (e.target === this) closeAuthModal();
+    });
+
+    // 页面加载时检查 token 有效性
+    async function checkAuth() {
+        if (!authToken) return;
+        try {
+            const res = await fetch(API_BASE + '/api/me', {
+                headers: {'Authorization': 'Bearer ' + authToken}
+            });
+            if (res.ok) {
+                const data = await res.json();
+                currentUser = data.email;
+                updateAuthUI();
+            } else {
+                logout();
+            }
+        } catch (e) {
+            logout();
+        }
+    }
+
+    // 在 checkout 前检查登录
+    const originalCheckout = checkout;
+    checkout = function() {
+        if (!authToken) {
+            showToast('❌ 请先登录', true);
+            openAuthModal('login');
+            return;
+        }
+        originalCheckout();
+    };
+
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
+</body>
+
+</html>
