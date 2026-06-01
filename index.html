@@ -1989,12 +1989,12 @@
 
             // 成功：显示下载链接
 
-            document.getElementById('step4Icon').textContent = '🎉';
-
-            document.getElementById('step4Title').textContent = '付款已确认！';
-
-            document.getElementById('step4Desc').textContent = '点击下方按钮下载，下载中断可随时重新点击';
-
+            document.getElementById('step4Icon').textContent = '⏳';
+            document.getElementById('step4Title').textContent = '付款已确认，等待管理员发货';
+            document.getElementById('step4Desc').textContent = '管理员确认后会发送下载链接到您的邮箱，请稍候';
+            document.getElementById('step4Waiting').style.display = 'block';
+            document.getElementById('step4DownloadArea').style.display = 'none';
+            showToast('✅ 已通知管理员，请等待确认');
             document.getElementById('step4Waiting').style.display = 'none';
 
             document.getElementById('step4DownloadArea').style.display = 'block';
