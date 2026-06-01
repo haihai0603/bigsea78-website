@@ -1971,10 +1971,8 @@
         showToast('⏳ 正在确认付款...');
 
         fetch(API_BASE + '/api/orders/' + currentOrderId + '/confirm', {
-
             method: 'POST',
-                headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken}
-
+            headers: {'Authorization': 'Bearer ' + authToken}
         })
 
         .then(r => r.json())
