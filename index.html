@@ -1646,6 +1646,7 @@
                 customer: customer,
 
                 contact: custEmail,
+                email: currentUser || custEmail,
 
                 note: note,
 
@@ -1672,7 +1673,7 @@
             // Notify admin that user claimed payment
             fetch(`${API_BASE}/api/orders/${currentOrderId}/confirm`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken},
                 body: JSON.stringify({})
             }).then(r => r.json()).then(d => {
                 console.log('[Payment] Admin notified:', d);
@@ -1688,17 +1689,14 @@
 
 
 
-            if (data.downloadTokens && data.downloadTokens.length > 0) {
 
-                showDownloadLinks(data.downloadTokens);
+            // Show waiting for admin confirmation
+            document.getElementById('step4Icon').textContent = '⏳';
+            document.getElementById('step4Title').textContent = '付款已确认，等待管理员发货';
+            document.getElementById('step4Desc').textContent = '管理员确认后会发送下载链接到您的邮箱，请稍候';
+            document.getElementById('step4Waiting').style.display = 'block';
+            document.getElementById('step4DownloadArea').style.display = 'none';
 
-            } else {
-
-                // Wait for phone payment confirmation
-
-                startOrderPolling(data.orderId);
-
-            }
 
         })
 
@@ -1974,7 +1972,8 @@
 
         fetch(API_BASE + '/api/orders/' + currentOrderId + '/confirm', {
 
-            method: 'POST'
+            method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken}
 
         })
 
